@@ -28,6 +28,16 @@
     if (self) {
         self.locationWanted = NO;
         self.flutterListening = NO;
+
+    }
+
+    return self;
+}
+
+-(void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
+    if ([call.method isEqualToString:@"getLocation"]) {
+        self.flutterResult = result;
+        self.locationWanted = YES;
         
         if ([CLLocationManager locationServicesEnabled]) {
             self.clLocationManager = [[CLLocationManager alloc] init];
@@ -44,16 +54,7 @@
             
             self.clLocationManager.desiredAccuracy = kCLLocationAccuracyBest;
         }
-
-    }
-
-    return self;
-}
-
--(void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
-    if ([call.method isEqualToString:@"getLocation"]) {
-        self.flutterResult = result;
-        self.locationWanted = YES;
+        
         [self.clLocationManager startUpdatingLocation];
     }
     else {
